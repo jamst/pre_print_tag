@@ -1,0 +1,54 @@
+
+
+    <% if action_name == "many_print" %>
+      <div id="show_note<%= i %>" >
+    <% else %>
+      <div style="display: none;" id="show_note<%= i %>" >
+    <% end %>
+    <div class="main button max_main show_note print4" id="show_button<%= i %>">
+      <header class="print_header">
+          <div class="product_name">
+              <p class="c_name" style=<%="font-size:#{chemical.font_size_tag}px" if chemical.font_size_tag.present? %> ><%= chemical.product_name %></p>
+              <p class="e_name" style=<%="font-size:#{chemical.font_size_tag}px" if chemical.font_size_tag.present? %> ><%= chemical.molecular_formula %></p>
+          </div>
+          <img src="/assets/img/print/logo.jpg" alt="">
+      </header>
+      <div class="main">
+          <div class="coa">
+              <div class="from">
+                  <div class="column">
+                      <div class="coa_ml">CAS:<%= chemical.cas_no %></div>
+                      <div class="coa_mr">Purity:<%= chemical.purity %></div>
+                  </div>
+                  <div class="column">
+                      <div class="coa_ml">Cat No.:<%= chemical.catalog_no %></div>
+                      <div class="coa_mr">M.W.:<%= chemical.molecular_weight %></div>
+                  </div>
+                  <div class="column">
+                      Appearance:<%= chemical.appearance %>
+                  </div>
+                  <div class="column">
+                      Storage Condition: <%= chemical.storage_condition %>
+                  </div>
+                  <div class="column">
+                      Batch No.: <%= chemical.batch_no %>
+                  </div>
+              </div>
+          </div>
+          <div class="nw">
+              <p><span>N.W.:</span><%= chemical.net_weight %></p>
+              <img src="/assets/img/print/text2.jpg" alt="">
+          </div>
+          <div class="caution">
+              <p class="title">CAUTION</p>
+              <p><%= chemical.caution %></p>
+          </div>
+      </div>
+      <div class="footer_text">
+          <p>Date Opened:<span></span></p>
+          <p>Date Opened:<span></span></p>
+          <p>Date Opened:<span></span></p>
+      </div>
+      <img src="/assets/img/print/footer.jpg" alt="" class="footer">
+    </div>
+    </div>

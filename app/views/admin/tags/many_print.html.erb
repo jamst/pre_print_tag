@@ -1,0 +1,126 @@
+<%= stylesheet_link_tag 'admin/application' %>
+<%= javascript_include_tag 'admin/application' %>
+<%= stylesheet_link_tag 'style' %>
+<%= stylesheet_link_tag "style", :media => "print" %>
+<%= stylesheet_link_tag "print" %>
+<%= stylesheet_link_tag "print", :media => "print" %>
+
+<style type="text/css">
+  .transform_tag{
+   transform: rotate(90deg);-ms-transform: rotate(90deg);-webkit-transform: rotate(90deg);padding-left: 80px;
+  }
+</style>
+
+<style type="text/css" media="print">
+.padding_top_80{margin-top:50px;}
+.noprint{display : none }
+.pageBreak{ page-break-after:always;}
+</style>
+
+<div class="ui form" style='z-index: 2;'>
+<div class="ui blue segment noprint">
+<h2 class="ui dividing header">标签打印设置</h2>
+  <div class="three fields">
+    <div class="field"><%= select_tag "tag_id", options_for_select([["4cm * 10cm",0],["6cm * 15cm",1],["9cm * 26cm",2], ["6cm * 10cm",3],["3cm * 6.5cm",4]],@tag.id), class: 'ui fluid need_dropdown dropdown' %></div>
+    <div class="field"><input id="btnPrint" type="button" value="打印" class="ui primary button" /></div>
+  </div>
+</div>
+</div>
+
+<div align="center">
+     <% print_size = (@tag.print_size >= @chemicals.size ? @tag.print_size : @chemicals.size ) %>
+     <% if print_size >= 1 %>
+       <% (1..print_size).each do |i|%>
+          <% chemical = @chemicals[i-1] %>
+          <% chemical_property  = chemical.order_item.chemical.chemical_safe_protects  if chemical %>
+          <% chemical_info_warnings = chemical.order_item.chemical.chemical_warning_sign if chemical %>
+          <%if i == 1 || i % @tag.print_size == 1 %>
+            <!--首行行头!-->
+            <div style="width:610px;height:<%= (@tag.id == 3 or @tag.id == 1) ? '750px' : '840px'%>">
+            <div class="  <%= (@tag.id == 3 or @tag.id == 1) ? 'padding_top_80' : ''%>  ">
+            <div id="print_<%= i %>" style="width:<%= 98/@tag.print_x_size %>%;height:<%= 100/@tag.print_y_size %>%;margin-right: 10px;float: left;">
+               <%= render :partial => "print_#{@tag.tag_type_y}_#{@tag.tag_type_x}" , :locals => { :i => i,:chemical => chemical,:chemical_property => chemical_property,:chemical_info_warnings => chemical_info_warnings } if chemical %>
+               <div style="width:100%;height:100%;display: none;" id="hidde_note<%= i %>"><div class="hidde_note button" id="hidde_button<%= i %>"><img src="/assets/img/timg.jpeg" style='width:80px;80px;', class="noprint"></div></div>
+            </div>
+          <% elsif i  == print_size || i % @tag.print_size == 0 %>
+            <!--末行行尾!-->
+            <div id="print_<%= i %>" style="width:<%= 98/@tag.print_x_size %>%;height:<%= 100/@tag.print_y_size %>%;float: left;">
+              <%= render :partial => "print_#{@tag.tag_type_y}_#{@tag.tag_type_x}" , :locals => { :i => i,:chemical => chemical,:chemical_property => chemical_property,:chemical_info_warnings => chemical_info_warnings } if chemical %>
+              <div style="width:100%;height:100%;display: none;"  id="hidde_note<%= i %>"><div class="hidde_note button" id="hidde_button<%= i %>"><img src="/assets/img/timg.jpeg" style='width:80px;80px;', class="noprint"></div></div>
+            </div>
+            </div>
+            </div>
+            <div class="pageBreak"></div>
+          <% elsif i % @tag.print_x_size == 0 %>
+            <!--每行行尾!-->
+            <div id="print_<%= i %>" style="width:<%= 98/@tag.print_x_size %>%;height:<%= 100/@tag.print_y_size %>%;float: left;">
+              <%= render :partial => "print_#{@tag.tag_type_y}_#{@tag.tag_type_x}" , :locals => { :i => i,:chemical => chemical,:chemical_property => chemical_property,:chemical_info_warnings => chemical_info_warnings } if chemical %>
+              <div style="width:100%;height:100%;display: none;" id="hidde_note<%= i %>"><div class="hidde_note button" id="hidde_button<%= i %>"><img src="/assets/img/timg.jpeg" style='width:80px;80px;', class="noprint"></div></div>
+            </div>
+            </div>
+            </br> <!--新起一行!--> <div>
+          <% else %>
+            <!--中间格子!-->
+            <div id="print_<%= i %>" style="width:<%= 98/@tag.print_x_size %>%;height:<%= 100/@tag.print_y_size %>%;margin-right: 10px;float: left;">
+              <%= render :partial => "print_#{@tag.tag_type_y}_#{@tag.tag_type_x}" , :locals => { :i => i,:chemical => chemical,:chemical_property => chemical_property,:chemical_info_warnings => chemical_info_warnings } if chemical %>
+              <div style="width:100%;height:100%;display: none;" id="hidde_note<%= i %>"><div class="hidde_note button" id="hidde_button<%= i %>"><img src="/assets/img/timg.jpeg" style='width:80px;80px;', class="noprint"></div></div>
+            </div>
+          <% end %>
+
+       <% end %>
+     <% else %>
+       <span class="red">注意：标签超出打印尺寸</span>
+     <% end %>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  $(".show_note").on('click',function(){
+    var id = this.id.replace ( /[^\d.]/g, '' )
+    $('#show_note'+ id).hide();
+    $('#hidde_note'+ id).show();
+  });
+  $(".hidde_note").on('click',function(){
+    var id = this.id.replace ( /[^\d.]/g, '' )
+    $('#hidde_note'+ id).hide();
+    $('#show_note'+ id).show();
+  });
+
+  // 打印触发
+  $("#btnPrint").on('click',function(){
+    $(".noprint").css("display", "")
+    window.print();
+  })
+
+  // 切换标签
+  $("#tag_id").on('change',function(){
+    var tag_id = $("#tag_id").val();
+    window.location.href = '/work/tags/many_print?tag_id='+tag_id+"&order_item_ids="+"<%= @chemical_ids %>"+"&tag_size="+"<%= @tag_size %>"+"&change_name_status="+"<%= params[:change_name_status] %>" ;
+  })
+
+  // 快速选择
+  $("#select_tag").on('change',function(){
+    var select_tag = $("#select_tag").val();
+    if(select_tag==0){
+     <% (1..@tag.print_size).each do |i|%>
+       var id = "<%= i %>"
+       $('#hidde_note'+ id).hide();
+       $('#show_note'+ id).show();
+     <% end %>
+    }else if(select_tag==1){
+     <% (1..@tag.print_size).each do |i|%>
+       var id = "<%= i %>"
+       $('#show_note'+ id).hide();
+       $('#hidde_note'+ id).show();
+     <% end %>
+    }else if(select_tag==2){
+     <% (1..(@tag.print_size/2)).each do |i|%>
+       var id = "<%= i %>"
+       $('#hidde_note'+ id).hide();
+       $('#show_note'+ id).show();
+     <% end %>
+    }
+  })
+
+</script>

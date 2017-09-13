@@ -1,0 +1,76 @@
+<div class="content">
+    <div class="ui small form">
+      <div class="divider"></div>
+        <%= form_for([:admin, @bar_code], remote: true,  html: {id: "new_bar_code"}) do |f| %>
+        <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
+            <div class="two fields">
+              <div class="field ">
+                <label>Product Name:</label>
+                 <%= f.text_field :product_name %>
+              </div>
+              <div class="field ">
+                <label>Font Size:</label>
+                <%= select_tag "bar_code[font_size_tag]", options_for_select((4..15).to_a,@bar_code.font_size_tag), include_blank: "Use Default", class: 'ui fluid need_dropdown dropdown' %>
+              </div>
+              <div class="field ">
+                <label>CAS No.:</label>
+                 <%= f.text_field :cas_no %>
+              </div>
+            </div>
+            <div class="two fields">
+              <div class="field ">
+                <label>Molecular Formula:</label>
+                 <%= f.text_field :molecular_formula %>
+              </div>
+              <div class="field ">
+                <label>Catalog No:</label>
+                 <%= f.text_field :catalog_no %>
+              </div>
+            </div>
+            <div class="two fields">
+              <div class="field ">
+                <label>Net Weight:</label>
+                 <%= f.text_field :net_weight %>
+              </div> 
+              <div class="field ">
+                <label>Molecular Weight:</label>
+                 <%= f.text_field :molecular_weight %>
+              </div>
+            </div>
+            <div class="two fields">
+              <div class="field ">
+                <label>Appearance:</label>
+                 <%= f.text_field :appearance %>
+              </div>
+              <div class="field ">
+                <label>Batch No.:</label>
+                 <%= f.text_field :batch_no %>
+              </div>
+            </div>
+            <div class="two fields">
+              <div class="field ">
+                <label>Storage Condition:</label>
+                 <%= f.text_field :storage_condition %>
+              </div>
+              <div class="field ">
+                <label>Purity:</label>
+                 <%= f.text_field :purity %>
+              </div>
+            </div>
+        <% end %>
+  </div>
+</div>
+ <div class="actions">
+    <div class="ui button" onclick="hideModal()">Cancel</div>
+    <div class="ui blue button" onclick="submitForm()">Confirm</div>
+  </div>
+<script type="text/javascript">
+  $('select.dropdown').dropdown();
+  function submitForm(){
+    $("#new_bar_code").submit();
+    $('#bar_code_modal').modal('hide');
+  }
+  function hideModal(){
+  $('#bar_code_modal').modal('hide');
+  }
+</script>

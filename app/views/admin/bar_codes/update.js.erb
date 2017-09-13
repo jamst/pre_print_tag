@@ -1,0 +1,2 @@
+$("#bar_code_<%= @bar_code.id %>").replaceWith("<%= j(render partial: 'list', locals: { bar_code: @bar_code} ) %>");
+$("#bar_code_modal").modal('hide');

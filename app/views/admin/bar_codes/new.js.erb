@@ -1,0 +1,5 @@
+$('#bar_code_modal').remove();
+
+$('body').append('<%= j(render 'new') %>');
+
+$('#bar_code_modal').modal('setting', {autofocus: false}).modal('show');

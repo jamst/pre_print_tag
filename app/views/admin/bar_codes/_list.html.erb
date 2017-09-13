@@ -1,0 +1,9 @@
+<tr id="bar_code_<%= bar_code.id %>" >
+  <td><%= bar_code.id %></td>
+  <td><%= bar_code.created_at %></td>
+  <td>
+    <%= link_to "打印", print_admin_tags_path({id: bar_code.id}), class: "ui green button", target: "_blank" %>
+    <%= link_to "修改", edit_admin_bar_code_path(bar_code.id), remote: true , class: "ui primary button" %>
+    <%= link_to "删除", admin_bar_code_path(bar_code.id), method: :delete, 'data-confirm' => '确定要删除吗?', class: "ui red button" %>
+  </td>
+</tr>

@@ -9,9 +9,18 @@ Rails.application.routes.draw do
         get 'error_mail'
       end
     end
+   
+    resources :bar_codes
+    resources :tags do
+      collection do
+        get :print
+        get :many_print
+      end
+    end
+
   end
 
-  root to: 'desboard#index'
+  root to: 'admin/bar_codes#index'
   devise_for :employees, path: "admin", path_names: { sign_in: 'login', sign_out: 'logout', password: 'secret', confirmation: 'verification', unlock: 'unblock', sign_up: 'cmon_let_me_in' }, controllers: { sessions: "admin/sessions", passwords: "admin/passwords"}
 
 end

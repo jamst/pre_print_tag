@@ -1,0 +1,45 @@
+
+
+    <% if action_name == "many_print" %>
+      <div id="show_note<%= i %>" >
+    <% else %>
+      <div style="display: none;" id="show_note<%= i %>" >
+    <% end %>
+
+    <div class="main button max_main show_note print" id="show_button<%= i %>">
+        <header class="print_header">
+            <div class="product_name" style=<%="font-size:#{chemical.font_size_tag}px" if chemical.font_size_tag.present? %> >
+                <%= chemical.product_name %>
+            </div>
+            <%= image_tag "com_logo.png" %>
+        </header>
+        <div class="main">
+            <div class="coa">
+                <div class="from">
+                    <div class="column">
+                        Net Weight: <span><%= chemical.net_weight %></span>
+                    </div>
+                    <div class="column">
+                        <div class="coa_ml">CAS No.: <%= chemical.cas_no %></div>
+                        <div class="coa_mr">Purity: <%= chemical.purity %></div>
+                    </div>
+                    <div class="column">
+                        <div class="coa_ml">Catalog No.: <%= chemical.catalog_no %></div>
+                        <div class="coa_mr">Appearance: <%= chemical.appearance %></div>
+                    </div>
+                    <div class="column">
+                        <div class="coa_ml">Molecular Weight: <%= chemical.molecular_weight %></div>
+                        <div class="coa_mr">Molecular Formula: <%= chemical.molecular_formula %></div>
+                    </div>
+                    <div class="column">
+                        <div class="coa_ml">Batch No.: <%= chemical.batch_no %></div>
+                        <div class="coa_mr">Storage Condition: <%= chemical.storage_condition %></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <p>iChemical Technologies Inc. Shanghai Facility <span>iChemical.com@2017</span></p>
+        </div>
+    </div>
+    </div>

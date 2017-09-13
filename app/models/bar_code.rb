@@ -1,0 +1,3 @@
+class BarCode < ApplicationRecord
+  
+end
