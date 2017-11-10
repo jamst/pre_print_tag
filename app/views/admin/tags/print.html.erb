@@ -22,6 +22,7 @@
 <h2 class="ui dividing header">标签打印设置</h2>
   <div class="two fields">
     <div class="field"><%= select_tag "tag_id", options_for_select([["4cm * 10cm",0],["6cm * 15cm",1],["9cm * 26cm",2], ["6cm * 10cm",3],["3cm * 6.5cm",4]],@tag.id), class: 'ui fluid need_dropdown dropdown' %></div>
+    <div class="field "><%= select_tag "quantity", options_for_select( %w(100g  250g 500g 500ml 1kg 1L 2.5L 5kg 5L 10kg 10L).unshift(@chemical_info[:quantity]).uniq, @chemical_info[:quantity]), include_blank: "选择数量", class: 'ui search fluid dropdown J_quantity' %></div>
     <div class="field"><%= select_tag "select_tag", options_for_select([["全选",0],["反选",1],["半选",2]]), include_blank: "快速选择", class: 'ui fluid need_dropdown dropdown' %></div>
     <div class="field"><input id="btnPrint" type="button" value="打印" class="ui primary button" /></div>
   </div>
@@ -94,6 +95,21 @@
     $(".noprint").css("display", "")
     window.print();
   })
+
+  // 设置数量
+  $('.J_quantity').dropdown({
+      // 允许修改选择框的值
+      allowAdditions: true,
+      onChange: function(val) {
+        var tag_id = $("#tag_id").val();
+        var quantity = val;
+        <% if params[:inventory_id].present? %>
+          window.location.href = '/admin/tags/roll_print?tag_id='+tag_id+"&inventory_id="+"<%= @chemical_info[:from_id] %>"+"&quantity="+quantity ;
+        <%elsif params[:order_detail_id].present?%>
+          window.location.href = '/admin/tags/roll_print?tag_id='+tag_id+"&order_detail_id="+"<%= @chemical_info[:from_id] %>"+"&quantity="+quantity ;
+        <%end%>
+      }
+  });
 
   // 切换标签
   $("#tag_id").on('change',function(){

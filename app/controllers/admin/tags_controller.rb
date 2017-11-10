@@ -8,6 +8,10 @@ class Admin::TagsController <  Admin::BaseController
       @id = params[:id]
 	end
 
+  def roll_print
+    print
+  end
+
 	def many_print
     @chemicals = []
 	  @chemical_ids = params[:bar_code_ids]
